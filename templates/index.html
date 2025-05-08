@@ -1,0 +1,183 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mastermind Basic Strategy Simulator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS + Icons for styling -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    /* Background with subtle repeating dot pattern */
+    body {
+      background: #f0f2f5 url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23ddd'/%3E%3C/svg%3E") repeat;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* Header banner section with gradient and shadow */
+    .page-header {
+      background: linear-gradient(120deg, #2d6cdf, #1f4f9a);
+      color: white;
+      padding: 2rem 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+
+    /* Hero image area showing banner/illustration */
+    .hero-container {
+      position: relative;
+      width: 100%;
+      max-height: 450px;
+      overflow: hidden;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .hero-container img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Form box with shadow and hover animation */
+    .form-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      padding: 2rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .form-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Icon styling inside form labels */
+    .form-card label i {
+      margin-right: 6px;
+      color: #2d6cdf;
+    }
+
+    /* Custom styling for primary button */
+    .btn-primary {
+      background-color: #2d6cdf;
+      border: none;
+      padding: 12px 36px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: #1f4f9a;
+      transform: translateY(-2px);
+    }
+
+    /* Footer styling */
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: #888;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container py-5">
+
+    <!-- Title/Header Banner -->
+    <div class="page-header">
+      <h1><i class="bi bi-brain"></i> Mastermind Basic Strategy Simulator</h1>
+    </div>
+
+    <!-- Hero Image (e.g. robot and human playing mastermind) -->
+    <div class="hero-container">
+      <img src="{{ url_for('static', filename='images/AI and Colours Index.png') }}"
+           alt="Mastermind AI Banner">
+    </div>
+
+    <!-- Game Configuration Form -->
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="form-card">
+          <form method="POST" action="/results">
+
+            <!-- Code Length Input -->
+            <div class="mb-4">
+              <label for="n" class="form-label">
+                <i class="bi bi-hash"></i>Code Length (n)
+              </label>
+              <input type="number" class="form-control" id="n" name="n"
+                     required min="1" max="10" value="4">
+            </div>
+
+            <!-- Number of Colors Input -->
+            <div class="mb-4">
+              <label for="m" class="form-label">
+                <i class="bi bi-palette"></i>Number of Colors (m)
+              </label>
+              <input type="number" class="form-control" id="m" name="m"
+                     required min="2" max="10" value="6">
+            </div>
+
+            <!-- Game Mode Selector -->
+            <div class="mb-4">
+              <label class="form-label">
+                <i class="bi bi-gear-wide-connected"></i>Game Mode
+              </label>
+              <select class="form-select" name="mode" required>
+                <option value="standard">Standard</option>
+                <option value="norep">Standard + No Repetition</option>
+                <option value="beginner">Beginner</option>
+                <option value="combo">Beginner + No Repetition</option>
+              </select>
+            </div>
+
+            <!-- Number of Simulations Input -->
+            <div class="mb-4">
+              <label for="runs" class="form-label">
+                <i class="bi bi-repeat"></i>Number of Simulations
+              </label>
+              <input type="number" class="form-control" id="runs" name="runs"
+                     required min="1" max="1000" value="100">
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-play-circle"></i> Run Simulation
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Credit -->
+    <footer>
+      &copy; 2025 By Kevin
+    </footer>
+
+  </div>
+
+  <!-- Bootstrap JS Bundle (for responsive dropdowns, modal, etc.) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

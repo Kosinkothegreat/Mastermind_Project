@@ -1,0 +1,200 @@
+<!-- templates/results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulation Results</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap & Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    /* Bolder dotted background for visual appeal */
+    body {
+      background: #f0f2f5 url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='2' fill='%23ccc'/%3E%3C/svg%3E") repeat;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* Styled header with gradient and shadow */
+    .page-header {
+      background: linear-gradient(120deg, #2d6cdf, #1f4f9a);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin: 2rem 0;
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    /* Main table styling */
+    .result-table {
+      margin-top: 1.5rem;
+    }
+
+    .result-table th {
+      width: 50%;
+      text-align: center;
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+
+    .result-table td {
+      vertical-align: top;
+      padding: 1rem;
+    }
+
+    .result-table td ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    /* Secondary button styling */
+    .btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      padding: 10px 30px;
+      font-weight: 500;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background-color: #565e64;
+      transform: translateY(-2px);
+    }
+
+    /* Styling for collapsible attempt list */
+    .collapse-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    /* Footer styling */
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: #888;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Gradient title header -->
+    <div class="page-header">
+      <h1><i class="bi bi-bar-chart-line-fill"></i> Simulation Results</h1>
+    </div>
+
+    <!-- Top illustration -->
+    <div class="text-center mb-4">
+      <img 
+        src="{{ url_for('static', filename='images/AI and Colours.png') }}" 
+        alt="Mastermind AI" 
+        class="img-fluid rounded"
+      >
+    </div>
+
+    <!-- Summary of request and statistics in two-column table -->
+    <table class="table table-bordered result-table">
+      <thead>
+        <tr>
+          <th>Request</th>
+          <th>Statistics on Number of Guesses</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <!-- Left: input parameters -->
+          <td>
+            <ul>
+              <li><i class="bi bi-palette-fill text-primary"></i>
+                <strong>Number of Colors:</strong> {{ request.form.m }}
+              </li>
+              <li><i class="bi bi-grid-3x3-gap-fill text-primary"></i>
+                <strong>Code Length:</strong> {{ request.form.n }}
+              </li>
+              <li><i class="bi bi-arrow-repeat text-primary"></i>
+                <strong>Repetition Allowed:</strong>
+                {% if mode in ['norep','combo'] %}No{% else %}Yes{% endif %}
+              </li>
+              <li><i class="bi bi-gear-wide-connected text-primary"></i>
+                <strong>Game Mode:</strong>
+                {% if mode=='standard' %}Standard{% 
+                   elif mode=='norep' %}No Repetition{% 
+                   elif mode=='beginner' %}Beginner{% 
+                   elif mode=='combo' %}Beginner + No Repetition{% endif %}
+              </li>
+              <li><i class="bi bi-sliders text-primary"></i>
+                <strong># Simulations:</strong> {{ request.form.runs }}
+              </li>
+            </ul>
+          </td>
+
+          <!-- Right: statistical output -->
+          <td>
+            <ul>
+              <li><i class="bi bi-calculator text-success"></i>
+                <strong>Average:</strong> {{ stats.mean }}
+              </li>
+              <li><i class="bi bi-graph-up-arrow text-success"></i>
+                <strong>Standard Deviation:</strong> {{ stats.std }}
+              </li>
+              <li><i class="bi bi-flag-fill text-success"></i>
+                <strong>Maximum:</strong> {{ stats.max }}
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Toggle to show all simulation attempts -->
+    <div class="text-center mt-4">
+      <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#attemptsCollapse" aria-expanded="false" aria-controls="attemptsCollapse">
+        <i class="bi bi-eye-fill"></i> Show All Attempts
+      </button>
+    </div>
+
+    <!-- Collapsible section with list of all attempt results -->
+    <div class="collapse" id="attemptsCollapse">
+      <div class="collapse-card">
+        <h5><i class="bi bi-list-ul"></i> Attempts Details</h5>
+        <ul class="list-group list-group-flush">
+          {% for attempt in attempts %}
+            <li class="list-group-item">Attempt {{ loop.index }}: {{ attempt }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Navigation back to homepage -->
+    <div class="text-center mt-4">
+      <a href="/" class="btn btn-secondary">
+        <i class="bi bi-house-fill"></i> Back to Home
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      &copy; 2025 kevin – Enjoy the game!
+    </footer>
+
+  </div>
+
+  <!-- Bootstrap JS for collapsible functionality -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
