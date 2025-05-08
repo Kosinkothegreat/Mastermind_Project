@@ -35,6 +35,16 @@ source venv/bin/activate
  python app.py
 
 
+# Play the game
+move to your browser and past
+localhost:5000
+hit enter ti access the interface and play the game.
+
+
+
+Note: This project codes are well documented and explainatory. 
+
+
 
 ## License
 
