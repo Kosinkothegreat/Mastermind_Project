@@ -37,8 +37,14 @@ source venv/bin/activate
 
 # Play the game
 move to your browser and past
+
+
+
 localhost:5000
-hit enter ti access the interface and play the game.
+
+
+
+hit enter to access the interface and play the game.
 
 
 
